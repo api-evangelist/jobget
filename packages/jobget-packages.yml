@@ -1,0 +1,88 @@
+generated: '2026-08-04'
+method: searched
+source: 'npm registry search + https://github.com/jobgetapp/jobgetapp'
+summary:
+  api_client_sdks: 0
+  first_party_packages: 3
+  note: 'JobGet publishes no API client library in any language. The only first-party
+    packages found on any public registry are shared internal build/lint/test
+    configuration packages from the jobgetapp open-source monorepo. They are genuinely
+    first-party (published under the @jobgetapp scope, repository
+    github.com/jobgetapp/jobgetapp) but they are developer tooling configs, not SDKs
+    for calling a JobGet API. No `SDKs` pointer is wired for this reason.'
+registries_searched:
+- registry: npm
+  result: 3 first-party packages under the @jobgetapp scope
+- registry: pypi
+  result: no jobget package (404)
+- registry: maven-central
+  result: none found
+- registry: nuget
+  result: none found
+- registry: pkg.go.dev
+  result: none found
+- registry: rubygems
+  result: none found
+- registry: packagist
+  result: none found
+- registry: crates.io
+  result: none found
+packages:
+- language: javascript
+  registry: npm
+  name: '@jobgetapp/jest-config'
+  url: https://www.npmjs.com/package/@jobgetapp/jest-config
+  install: npm install @jobgetapp/jest-config
+  version: 3.1.0
+  license: MIT
+  last_published: '2025-05-07'
+  repository: https://github.com/jobgetapp/jobgetapp
+  official: true
+  kind: build-tooling
+  api_client: false
+  description: Standard jest configuration.
+- language: javascript
+  registry: npm
+  name: '@jobgetapp/eslint-config'
+  url: https://www.npmjs.com/package/@jobgetapp/eslint-config
+  install: npm install @jobgetapp/eslint-config
+  version: 1.1.0
+  license: MIT
+  last_published: '2023-09-06'
+  repository: https://github.com/jobgetapp/jobgetapp
+  official: true
+  kind: build-tooling
+  api_client: false
+  description: Standard eslint configuration.
+- language: javascript
+  registry: npm
+  name: '@jobgetapp/typescript-config'
+  url: https://www.npmjs.com/package/@jobgetapp/typescript-config
+  install: npm install @jobgetapp/typescript-config
+  version: 1.1.0
+  license: MIT
+  last_published: '2023-09-06'
+  repository: https://github.com/jobgetapp/jobgetapp
+  official: true
+  kind: build-tooling
+  api_client: false
+  description: Standard typescript configuration.
+source_code:
+- name: jobgetapp/jobgetapp
+  url: https://github.com/jobgetapp/jobgetapp
+  description: Monorepo containing open-source projects at JobGet.
+  language: TypeScript
+  topics: [monorepo, rushjs, typescript]
+  created: '2021-12-20'
+  last_push: '2025-05-07'
+  public_repos_in_org: 1
+x-evidence:
+- fetched: '2026-08-04'
+  url: https://registry.npmjs.org/-/v1/search?text=jobget
+  http_status: 200
+- fetched: '2026-08-04'
+  url: https://api.github.com/orgs/jobgetapp
+  http_status: 200
+- fetched: '2026-08-04'
+  url: https://pypi.org/pypi/jobget/json
+  http_status: 404

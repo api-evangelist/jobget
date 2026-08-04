@@ -1,0 +1,78 @@
+generated: '2026-08-04'
+method: probed
+source: 'anonymous HTTP probes of https://api.jobget.com + https://blog.jobget.com/llms.txt'
+summary: 'JobGet publishes no API conventions documentation. Everything below is what
+  was actually observed on the wire from the public production host api.jobget.com, plus
+  what JobGet''s own llms.txt states about its MCP endpoint. Fields recorded as
+  `undocumented` are genuinely absent from JobGet''s public surface, not merely
+  unverified — there is no developer portal, reference, or specification to read them
+  from.'
+authentication:
+  documented: false
+  observed: 'No authentication challenge is issued for unknown paths; unauthenticated
+    requests receive a 404 problem document rather than a 401, so the scheme in use on
+    real routes could not be determined without credentials.'
+  see: authentication/jobget-authentication.yml
+idempotency:
+  supported: unknown
+  documented: false
+  header: null
+  note: 'No idempotency key header is documented and none could be observed without a
+    writable documented endpoint. No `Idempotency` pointer is wired into apis.yml —
+    emitting one would assert an idempotency contract JobGet has not published.'
+pagination:
+  documented: false
+  style: unknown
+  note: No pagination parameters or response envelope are published.
+error_envelope:
+  style: rfc9457-shaped
+  media_type: application/json; charset=utf-8
+  members: [type, title, status, detail, message, instance, correlationId, timestamp]
+  see: errors/jobget-problem-types.yml
+  note: 'Uses RFC 9457 member names but not the application/problem+json media type, and
+    the `type` URI is an unreplaced api.example.com placeholder.'
+request_tracing:
+  supported: true
+  observed: true
+  response_header: correlation_id
+  body_field: correlationId
+  format: UUID v4
+  note: 'Every response carries a correlation_id response header whose value matches the
+    correlationId member in the error body — a genuine, observable tracing convention,
+    though undocumented. Note the header uses snake_case rather than the conventional
+    hyphenated form (X-Correlation-Id / Correlation-Id).'
+caching:
+  etag: true
+  observed: 'Weak ETags (W/"...") are emitted on responses, including error responses.'
+  cache_control: not observed
+rate_limiting:
+  documented: false
+  signal_headers_observed: []
+  note: 'No RateLimit / X-RateLimit / Retry-After headers were observed on anonymous
+    requests. Absence on a 404 path does not prove absence on live routes, but nothing
+    is published.'
+versioning:
+  documented: false
+  scheme: 'uri-path (apparent) — /v1 is routed by the application, though /v1 itself 404s.'
+  header: none observed
+  note: No versioning or deprecation policy is published. No Sunset/Deprecation header support advertised.
+cors:
+  note: 'A preflight OPTIONS against /v1 with an Origin header returned the standard 404
+    problem document with no Access-Control-Allow-* headers, i.e. CORS is configured per
+    route rather than globally, or not at all for unknown paths.'
+platform:
+  server_hint: 'x-powered-by: Express'
+  note: 'The API advertises its framework via the x-powered-by header, which is
+    conventionally disabled in production.'
+agent_conventions:
+  llms_txt: llms/jobget-llms.txt
+  mcp: mcp/jobget-mcp.yml
+  note: 'JobGet''s llms.txt states of the site MCP endpoint: "No authentication required
+    to connect to the MCP endpoint", "Only public information accessible on the site is
+    available", and "Content is always live and up to date". Those apply to the blog
+    host, not to api.jobget.com.'
+cross_links:
+  errors: errors/jobget-problem-types.yml
+  authentication: authentication/jobget-authentication.yml
+  conformance: conformance/jobget-conformance.yml
+  security: security/jobget-domain-security.yml

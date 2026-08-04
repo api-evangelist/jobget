@@ -1,0 +1,51 @@
+generated: '2026-08-04'
+method: probed
+source: live anonymous HTTP probes of every JobGet host
+summary:
+  hosts_probed: 4
+  paths_probed: 26
+  documents_found: 0
+  note: 'JobGet serves no /.well-known/ discovery documents on any host. No security.txt
+    (RFC 9116), no OIDC discovery, no OAuth authorization-server metadata, no
+    api-catalog (RFC 9727) and no ai-plugin.json. Recorded as verified absence; no
+    WellKnown or SecurityTxt pointer is wired into apis.yml because no document exists.
+    www.jobget.com and support.jobget.com answer 404 with an HTML application shell,
+    api.jobget.com answers 404 with an RFC 9457 problem document, and blog.jobget.com
+    answers 400 with an HTML page.'
+hosts:
+- host: https://api.jobget.com
+  role: production API host
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://www.jobget.com
+  role: company website
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /robots.txt, status: 404}
+  - {path: /sitemap.xml, status: 200, note: sitemap only, not a well-known document}
+- host: https://blog.jobget.com
+  role: blog host (Wix)
+  documents:
+  - {path: /.well-known/security.txt, status: 400}
+  - {path: /.well-known/agent-card.json, status: 400}
+  - {path: /.well-known/agent.json, status: 400}
+  - {path: /robots.txt, status: 200, note: robots only, not a well-known document}
+  - {path: /llms.txt, status: 200, note: 'captured verbatim to llms/jobget-llms.txt'}
+- host: https://support.jobget.com
+  role: help center (HubSpot)
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /robots.txt, status: 200, note: robots only, not a well-known document}

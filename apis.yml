@@ -1,23 +1,136 @@
 aid: jobget
 name: JobGet
-description: 'JobGet is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'JobGet is a Boston, Massachusetts based hourly and frontline hiring network
+  that operates a mobile-first job marketplace for workers in food service, retail,
+  hospitality, healthcare, warehousing and trucking. Job seekers build a profile in
+  the JobGet app, receive AI matched recommendations from the JobGenie assistant, apply
+  with one tap, and message or interview with hiring managers directly in the app. On
+  the employer side JobGet sells SMB self-serve job posting and an enterprise suite
+  (SpendSmart budget reallocation, HireReady screening and interview scheduling, and
+  Network Access) that plugs into existing applicant tracking systems including Workday,
+  Greenhouse, ADP, UKG, SAP SuccessFactors, SmartRecruiters, Bullhorn and Fountain.
+  Through its acquisitions of Snagajob, Seasoned and Foh&Boh the company reaches a
+  stated network of 100M+ everyday workers. JobGet publishes no public developer portal,
+  API documentation or machine-readable API specification; its production API host
+  api.jobget.com is publicly reachable but undocumented, and ATS connectivity is
+  delivered as a managed integration rather than a self-serve API.'
+image: https://jobget.com/jobget-logo-purple.svg
 url: https://raw.githubusercontent.com/api-evangelist/jobget/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Jobs
+- Recruiting
+- Hiring
+- Human Resources
+- Talent Acquisition
+- Job Search
+- Hourly Work
+- Applicant Tracking
+- Marketplace
+- Mobile
+apis:
+- aid: jobget:platform-api
+  name: JobGet Platform API
+  description: 'The production API host that backs the JobGet mobile applications and
+    employer web experience. The host is publicly reachable over HTTPS and returns a
+    structured RFC 9457 application/problem+json error envelope with a correlationId,
+    but JobGet publishes no developer portal, no reference documentation, no
+    authentication guide and no OpenAPI/Swagger/GraphQL description for it. Everything
+    recorded about this API in this repository was observed by anonymous HTTP probe of
+    public endpoints; no credentials were used and no access control was defeated.'
+  humanURL: https://www.jobget.com/
+  baseURL: https://api.jobget.com
+  tags:
+  - Jobs
+  - Hiring
+  - Undocumented
+  properties:
+  - type: ErrorCatalog
+    url: errors/jobget-problem-types.yml
+  - type: Conventions
+    url: conventions/jobget-conventions.yml
+- aid: jobget:site-mcp
+  name: JobGet Site MCP Server
+  description: 'A Model Context Protocol endpoint served from JobGet''s own blog host
+    at https://blog.jobget.com/_api/mcp and advertised in JobGet''s published llms.txt.
+    It is the Wix Site MCP server provided by the underlying Wix platform rather than a
+    JobGet-authored API server: an anonymous tools/list returned HTTP 200 with nine
+    tools for reading site content, retrieving business details, generating a visitor
+    token and calling Wix site APIs on a visitor''s behalf. It exposes JobGet''s public
+    blog content to agents; it does not expose the JobGet jobs, application or employer
+    data model.'
+  humanURL: https://blog.jobget.com/
+  baseURL: https://blog.jobget.com/_api/mcp
+  tags:
+  - MCP
+  - Agents
+  - Content
+  properties:
+  - type: MCPServer
+    url: mcp/jobget-mcp.yml
+  - type: Authentication
+    url: authentication/jobget-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/jobget-domain-security.yml
 - type: Website
+  url: https://www.jobget.com/
+- type: SecondaryMarket
   url: https://forgeglobal.com/jobget_stock/
+- type: About
+  url: https://www.jobget.com/about
+- type: Blog
+  url: https://blog.jobget.com/
+- type: BlogRSS
+  url: https://blog.jobget.com/blog-feed.xml
+- type: Support
+  url: https://support.jobget.com/
+- type: Pricing
+  url: https://www.jobget.com/pricing
+- type: SignUp
+  url: https://jobget.com/hire
+- type: TermsOfService
+  url: https://www.jobget.com/terms-conditions
+- type: PrivacyPolicy
+  url: https://www.jobget.com/privacy-policy
+- type: Accessibility
+  url: https://www.jobget.com/accessibility-policy
+- type: GitHubOrganization
+  url: https://github.com/jobgetapp
+- type: Press
+  url: https://www.jobget.com/press
+- type: Careers
+  url: https://jobget.notion.site/jobget/Careers-Join-JobGet-c7dce8e7d9b9404c91352381fc8d3fed
+- type: Enterprise
+  url: https://www.jobget.com/employer
+- type: LLMsTxt
+  url: llms/jobget-llms.txt
+- type: MCPServer
+  url: mcp/jobget-mcp.yml
+- type: Packages
+  url: packages/jobget-packages.yml
+- type: Authentication
+  url: authentication/jobget-authentication.yml
+- type: Conventions
+  url: conventions/jobget-conventions.yml
+- type: ErrorCatalog
+  url: errors/jobget-problem-types.yml
+- type: Conformance
+  url: conformance/jobget-conformance.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 9
+  pass: local-v1

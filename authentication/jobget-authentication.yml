@@ -1,0 +1,70 @@
+generated: '2026-08-04'
+method: probed
+source: 'anonymous HTTP probes of https://api.jobget.com and
+  https://blog.jobget.com/_api/mcp + https://blog.jobget.com/llms.txt'
+summary:
+  types: [visitor-token]
+  api_key_in: []
+  oauth2_flows: []
+  documented: false
+  note: 'JobGet publishes no authentication documentation for its platform API. The only
+    authentication model that could be established from the public surface is the
+    anonymous visitor-token model of the Wix-provided site MCP endpoint. This artifact
+    is derived from live probes rather than from an OpenAPI, because JobGet publishes no
+    specification.'
+surfaces:
+- surface: JobGet Platform API
+  host: https://api.jobget.com
+  documented: false
+  scheme: unknown
+  discovery:
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  observed: 'Unknown paths return a 404 problem document rather than a 401/403 challenge
+    and emit no WWW-Authenticate header, so no authentication scheme is advertised at the
+    edge. The scheme protecting real routes cannot be determined without credentials, and
+    this pipeline does not use credentials.'
+  gaps:
+  - No public authentication guide.
+  - No OAuth 2.0 authorization-server metadata (RFC 8414).
+  - No OpenID Connect discovery document.
+  - No WWW-Authenticate challenge on unauthenticated requests.
+- surface: JobGet Site MCP Server
+  host: https://blog.jobget.com/_api/mcp
+  documented: true
+  documented_at: https://blog.jobget.com/llms.txt
+  scheme: visitor-token
+  anonymous_connect: true
+  observed: 'An anonymous POST tools/list returned HTTP 200 with the full tool set, so
+    connecting and discovering tools requires no credential. JobGet''s llms.txt states
+    verbatim: "No authentication required to connect to the MCP endpoint" and "Only
+    public information accessible on the site is available".'
+  token_acquisition:
+    tool: GenerateVisitorToken
+    description: 'Creates a new visitor session and returns a visitor access token for
+      the site. Must be called before any CallWixSiteAPI or ExecuteWixAPI request.'
+    inputs: []
+  token_use:
+    parameter: visitorToken
+    used_by: [CallWixSiteAPI, ExecuteWixAPI]
+  scopes:
+    model: none
+    note: 'No OAuth scopes. Access is bounded by what the Wix site exposes publicly to a
+      visitor session, not by a scope grant, so there is no scopes/ artifact for this
+      provider.'
+schemes:
+- name: WixVisitorToken
+  type: bearer-like
+  surface: JobGet Site MCP Server
+  sources: [https://blog.jobget.com/llms.txt, 'live tools/list probe 2026-08-04']
+x-evidence:
+- fetched: '2026-08-04'
+  url: https://blog.jobget.com/_api/mcp
+  method: POST tools/list
+  http_status: 200
+- fetched: '2026-08-04'
+  url: https://api.jobget.com/.well-known/openid-configuration
+  http_status: 404
+- fetched: '2026-08-04'
+  url: https://api.jobget.com/.well-known/oauth-authorization-server
+  http_status: 404

@@ -1,0 +1,65 @@
+generated: '2026-08-04'
+method: probed
+source: 'anonymous HTTP probes of https://api.jobget.com (no OpenAPI published)'
+format: rfc9457-shaped
+api: JobGet Platform API
+envelope:
+  media_type: application/json; charset=utf-8
+  media_type_note: 'The body carries RFC 9457 Problem Details member names but is served
+    as application/json, not the registered application/problem+json media type. A
+    strict RFC 9457 consumer negotiating on content type will not recognise it as a
+    problem document.'
+  members:
+  - {name: type, required: true, description: 'URI identifying the problem type.'}
+  - {name: title, required: true, description: 'Short, machine-readable error label in
+      SCREAMING_SNAKE_CASE, e.g. NOT_FOUND.'}
+  - {name: status, required: true, description: HTTP status code, duplicated in the body.}
+  - {name: detail, required: true, description: Human-readable explanation of this occurrence.}
+  - {name: message, required: true, description: 'Non-standard extension member. An ARRAY
+      of strings that duplicates detail; used to carry multiple validation messages.'}
+  - {name: instance, required: true, description: 'The request path the problem occurred on.'}
+  - {name: correlationId, required: true, description: 'UUID correlating the response to
+      server-side logs. Also returned in the correlation_id response header.'}
+  - {name: timestamp, required: true, description: ISO 8601 timestamp of the failure.}
+problems:
+- status: 404
+  type: https://api.example.com/errors/http-404
+  title: NOT_FOUND
+  detail_pattern: 'Cannot <METHOD> <path>'
+  observed: true
+  observed_on: ['GET /', 'GET /v1', 'GET /nope', 'POST /v1/foo', 'OPTIONS /v1']
+  remediation: 'The path does not exist on api.jobget.com. JobGet publishes no route
+    reference, so there is no public way to determine a valid path.'
+defects:
+- id: placeholder-problem-type-uri
+  severity: high
+  finding: 'The RFC 9457 `type` member is emitted as
+    https://api.example.com/errors/http-404 — the framework''s unreplaced example
+    placeholder. api.example.com is the IANA-reserved example domain, so the problem type
+    URI is not dereferenceable and does not identify JobGet. Every error class this API
+    returns is therefore untyped in practice.'
+  evidence: 'Observed identically across GET /, GET /v1, GET /nope, POST /v1/foo and
+    OPTIONS /v1 on 2026-08-04.'
+  remediation: 'Replace the base URI with a JobGet-owned, dereferenceable namespace (for
+    example https://api.jobget.com/errors/{code}) and publish a page per problem type.'
+- id: problem-media-type-not-set
+  severity: medium
+  finding: 'Problem responses are served as application/json rather than
+    application/problem+json (RFC 9457 §3).'
+  remediation: Set Content-Type to application/problem+json on error responses.
+coverage:
+  note: 'Only the 404 problem type could be observed. Enumerating 4xx/5xx classes beyond
+    what an unauthenticated request naturally produces would require credentials or
+    deliberate probing of protected routes, which this pipeline does not do. No OpenAPI
+    exists to derive the remaining responses from, so this catalog is intentionally
+    partial rather than inferred.'
+x-evidence:
+- fetched: '2026-08-04'
+  url: https://api.jobget.com/nope
+  http_status: 404
+  content_type: application/json; charset=utf-8
+- fetched: '2026-08-04'
+  url: https://api.jobget.com/v1/foo
+  method: POST
+  http_status: 404
+  content_type: application/json; charset=utf-8
