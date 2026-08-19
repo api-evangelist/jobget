@@ -8,19 +8,16 @@ server:
   url: https://blog.jobget.com/_api/mcp
   provider_authored: false
   platform: Wix Site MCP
-  note: 'This MCP endpoint is served from a JobGet-controlled host (blog.jobget.com)
-    and is explicitly advertised in JobGet''s own published llms.txt under an "AI Agent
-    Access" heading. The server implementation itself is the Wix Site MCP server that
-    ships with the Wix website platform JobGet uses for its blog, not a JobGet-authored
-    server over the JobGet jobs/hiring data model. It exposes JobGet''s public blog
-    content and business details to agents. There is no MCP server for the JobGet
-    Platform API (api.jobget.com).'
+  note: This MCP endpoint is served from a JobGet-controlled host (blog.jobget.com) and is explicitly
+    advertised in JobGet's own published llms.txt under an "AI Agent Access" heading. The server implementation
+    itself is the Wix Site MCP server that ships with the Wix website platform JobGet uses for its blog,
+    not a JobGet-authored server over the JobGet jobs/hiring data model. It exposes JobGet's public blog
+    content and business details to agents. There is no MCP server for the JobGet Platform API (api.jobget.com).
   docs: https://dev.wix.com/docs/develop-websites/articles/get-started/about-the-wix-site-mcp
 authentication:
   required: false
-  note: 'Anonymous tools/list succeeded. Tools that act on the site require a visitor
-    access token obtained from the GenerateVisitorToken tool; no JobGet account,
-    API key or OAuth client is involved.'
+  note: Anonymous tools/list succeeded. Tools that act on the site require a visitor access token obtained
+    from the GenerateVisitorToken tool; no JobGet account, API key or OAuth client is involved.
 introspection:
   method: POST tools/list
   http_status: 200
@@ -36,47 +33,75 @@ tools:
   category: site-metadata
 - name: SearchInSite
   description: Searches the site "JobGet" for information.
-  inputs: [searchTerm]
-  required: [searchTerm]
+  inputs:
+  - searchTerm
+  required:
+  - searchTerm
   category: content-search
 - name: SearchSiteApiDocs
-  description: Searches for site "JobGet" API documentation and returns how to use the
-    site using the API.
-  inputs: [searchTerm]
-  required: [searchTerm]
+  description: Searches for site "JobGet" API documentation and returns how to use the site using the
+    API.
+  inputs:
+  - searchTerm
+  required:
+  - searchTerm
   category: discovery
 - name: GenerateVisitorToken
-  description: Create a new visitor session and obtain a visitor access token for site
-    "JobGet".
+  description: Create a new visitor session and obtain a visitor access token for site "JobGet".
   inputs: []
   category: auth
 - name: CallWixSiteAPI
-  description: Call APIs on site "JobGet". Use this to perform an action on a visitor's
-    behalf, for example query the site's data or book an appointment.
-  inputs: [visitorToken, url, method, body]
-  required: [visitorToken, url, method]
+  description: Call APIs on site "JobGet". Use this to perform an action on a visitor's behalf, for example
+    query the site's data or book an appointment.
+  inputs:
+  - visitorToken
+  - url
+  - method
+  - body
+  required:
+  - visitorToken
+  - url
+  - method
   category: execution
 - name: ExecuteWixAPI
-  description: Run JavaScript against the Wix REST API on site "JobGet", on the
-    visitor's behalf. The code runs in a sandbox and returns whatever it returns.
-  inputs: [code, reason, hasMutations, sourceDocUrls, visitorToken]
-  required: [code, reason, hasMutations, sourceDocUrls, visitorToken]
+  description: Run JavaScript against the Wix REST API on site "JobGet", on the visitor's behalf. The
+    code runs in a sandbox and returns whatever it returns.
+  inputs:
+  - code
+  - reason
+  - hasMutations
+  - sourceDocUrls
+  - visitorToken
+  required:
+  - code
+  - reason
+  - hasMutations
+  - sourceDocUrls
+  - visitorToken
   category: execution
 - name: BrowseWixRESTDocsMenu
   description: Browse the Wix REST API documentation menu hierarchy.
-  inputs: [menuUrl, reason]
-  required: [reason]
+  inputs:
+  - menuUrl
+  - reason
+  required:
+  - reason
   category: discovery
 - name: ReadFullDocsArticle
-  description: Fetches the full Wix docs article or method article with code examples
-    for using the method.
-  inputs: [articleUrl]
-  required: [articleUrl]
+  description: Fetches the full Wix docs article or method article with code examples for using the method.
+  inputs:
+  - articleUrl
+  required:
+  - articleUrl
   category: discovery
 - name: ReadFullDocsMethodSchema
   description: Fetches the full method schema for a given method.
-  inputs: [articleUrl, reason]
-  required: [articleUrl, reason]
+  inputs:
+  - articleUrl
+  - reason
+  required:
+  - articleUrl
+  - reason
   category: discovery
 x-evidence:
 - fetched: '2026-08-04'
@@ -91,6 +116,14 @@ x-evidence:
   content_type: application/json; charset=utf-8
   finding: 9 tools returned with full inputSchema, saved verbatim
 x-notes:
-- 'No tool crosswalk artifact is emitted: a crosswalk requires both an MCP tool set and
-  an OpenAPI to bind it to. JobGet publishes no OpenAPI and no GraphQL surface, and
-  these nine tools are Wix platform tools with no JobGet REST operation behind them.'
+- 'No tool crosswalk artifact is emitted: a crosswalk requires both an MCP tool set and an OpenAPI to
+  bind it to. JobGet publishes no OpenAPI and no GraphQL surface, and these nine tools are Wix platform
+  tools with no JobGet REST operation behind them.'
+deployment:
+  mode: remote
+  endpoint: https://blog.jobget.com/_api/mcp
+  verified: probed
+  probe: live
+  tools: 9
+  checked: '2026-08-12'
+  source: catalog MCP census
