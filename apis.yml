@@ -25,6 +25,18 @@ created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
+- Job
+- Recruiting
+- Hiring
+- Human Resources
+- Talent Acquisition
+- Job Search
+- Hourly Work
+- Applicant Tracking
+- Marketplace
+- Mobile
+tags_raw:
+- Company
 - Jobs
 - Recruiting
 - Hiring
@@ -48,6 +60,10 @@ apis:
   humanURL: https://www.jobget.com/
   baseURL: https://api.jobget.com
   tags:
+  - Job
+  - Hiring
+  - Undocumented
+  tags_raw:
   - Jobs
   - Hiring
   - Undocumented
