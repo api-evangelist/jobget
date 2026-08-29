@@ -14,6 +14,17 @@ description: 'JobGet is a Boston, Massachusetts based hourly and frontline hirin
   API documentation or machine-readable API specification; its production API host
   api.jobget.com is publicly reachable but undocumented, and ATS connectivity is
   delivered as a managed integration rather than a self-serve API.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://jobget.com/jobget-logo-purple.svg
 url: https://raw.githubusercontent.com/api-evangelist/jobget/refs/heads/main/apis.yml
 x-type: company
