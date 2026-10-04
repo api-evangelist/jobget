@@ -117,6 +117,9 @@ apis:
     url: mcp/jobget-mcp.yml
   - type: Authentication
     url: authentication/jobget-authentication.yml
+  x-surface: platform-generated
+  x-platform: wix
+  x-platform-surface: site-mcp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
